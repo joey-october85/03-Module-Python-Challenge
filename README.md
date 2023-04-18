@@ -11,3 +11,9 @@ https://sparkbyexamples.com/python/get-index-of-max-of-list-in-python/#:~:text=H
 How To Export all "prints" to external .TXT File - Python #webdevpro
 
 https://youtu.be/YkW1RwEc8PU
+
+Get Unique Values from a List in Python
+https://youtu.be/jp3q4Q0fpAE
+
+Display value as percentage
+https://blog.finxter.com/how-to-print-a-percentage-value-in-python/
