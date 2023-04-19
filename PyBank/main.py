@@ -5,19 +5,18 @@ import csv
 #working directory PyBank folder
 budget_data_csv = os.path.join('Resources', 'budget_data.csv')
 
-#list for total months     
-totalmonths = []
+#list containing month/date values
+months = []
 
-#list for month to month value change
-valuechange = []
+#list containing all the profit/loss values
+profitloss = []
 
+#list containing the month to month change values of profit/loss
+change_value = []
 
 #set total for all profits/losses to 0
-#will be used for running sum (calculated in loop)
+#will be used for running total (calculated in loop)
 total = 0
-
-#value for month to moth profit/loss change. Initially set to 0 and recalculated in loop
-change = 0
 
 #read in the CSV file
 with open(budget_data_csv) as file:
@@ -26,51 +25,46 @@ with open(budget_data_csv) as file:
         reader = csv.reader(file, delimiter=",")
 
         csv_header = next(reader)
-        #print(f"CSV Header: {csv_header}")
-        
-        #create loop to read each row
+                
+        #loop
         for row in reader:
 
-                #add the value of the 0 index for each row to the total months list
-                #this will add the date string to the totalmonths list created above
-                totalmonths.append(row[0])
-
-                #with each loop the value of the row's profit/loss value will be added to the running sum
+                #add the value of the 0 index for each row to the months list
+                months.append(row[0])
+                #add the value of the 1 index for each row to the profitloss list
+                profitloss.append(row[1])
+                #with each loop the value of the row's profit/loss value will be added to the running total
                 total += int(row[1])
 
-                #calculate profit/loss change value
-                #assign the value of the profit/loss for the row to adjustedchange variable
-                adjustedchange = int(row[1])
-                #take the value of our change value and subtrace adjusted change
-                change -= adjustedchange
-                #add the change value to valuechange list created above
-                valuechange.append(change)
-                #redefine value of change for the next loop
-                change = int(row[1])
-
-        #establish values for calculating average change value        
-        ignore = valuechange[0]
-        valuechangecount = len(valuechange) - 1
-        valuechangesum = ignore - sum(valuechange)
-        valuechangeavg = round(valuechangesum/valuechangecount,2)
+              
+        #loop - calculate month to month profit/loss change value
+        #86 total months but 85 change values exist. (The first row has no previous value to compare against)
+        for nr in range(len(months)-1):
+                change_value.append(int(profitloss[nr+1]) - int(profitloss[nr]))
 
         #pull index for greatest profit increase and decrease values
-        datemaxindex = valuechange.index(max(valuechange))
-        dateminindex = valuechange.index(min(valuechange))
+        datemaxindex = change_value.index(max(change_value))
+        dateminindex = change_value.index(min(change_value))
 
-        #pull corresponding dates of greatest profit increase and decrease using index (from totalmonths list)
+        #pull corresponding dates of greatest profit increase and decrease using index (from months list)
         #assign those date strings to their own variable
-        datemax = totalmonths[datemaxindex]
-        datemin = totalmonths[dateminindex]
+        datemax = months[datemaxindex]
+        datemin = months[dateminindex]
+
+        #calculate change value average and round to two decimals
+        change_avg = round(int(sum(change_value))/(int(len(months))-1),2)
+        
 
 #print text and results
 print("Financial Analysis")
 print("----------------------------")
-print(f'Total months: {len(totalmonths)}')
+print(f'Total months: {len(months)}')
 print(f'Total: ${total}')
-print(f'Average Change: ${valuechangeavg}')
-print(f'Greatest Increase in Profits: {datemax} $({max(valuechange)})')
-print(f'Greatest Decrease in Profits: {datemin} $({min(valuechange)})')
+print(f'Average Change: ${change_avg}')
+print(f'Greatest Increase in Profits: {datemax} $({max(change_value)})')
+print(f'Greatest Decrease in Profits: {datemin} $({min(change_value)})')
+print("next")
+
 
 
 
@@ -80,11 +74,11 @@ textfile = open('Analysis\\results.txt', 'w')
 
 textfile.write("Financial Analysis \n")
 textfile.write("----------------------------\n")
-textfile.write(f'Total months: {len(totalmonths)}\n')
+textfile.write(f'Total months: {len(months)}\n')
 textfile.write(f'Total: ${total}\n')
-textfile.write(f'Average Change: ${valuechangeavg}\n')
-textfile.write(f'Greatest Increase in Profits: {datemax} $({max(valuechange)})\n')
-textfile.write(f'Greatest Decrease in Profits: {datemin} $({min(valuechange)})\n')
+textfile.write(f'Average Change: ${change_avg}\n')
+textfile.write(f'Greatest Increase in Profits: {datemax} $({max(change_value)})\n')
+textfile.write(f'Greatest Decrease in Profits: {datemin} $({min(change_value)})\n')
 
 
 textfile.close()
