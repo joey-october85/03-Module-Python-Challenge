@@ -5,8 +5,11 @@ import csv
 #working directory PyBank folder
 budget_data_csv = os.path.join('Resources', 'election_data.csv')
 
+#lists containing values for votes, candidates 
 totalvotes = []
 candidates = []
+
+#total votes for each candidate. Initially set to 0 and tallied in the loop
 candidate_count = [0,0,0]
 
 #read in the CSV file
@@ -16,13 +19,13 @@ with open(budget_data_csv) as file:
     reader = csv.reader(file, delimiter=",")
 
     csv_header = next(reader)
-    #print(f"CSV Header: {csv_header}")
 
+    #loop
     for row in reader:
-        #create list for the values of all votes casted
+        #append the values of all votes to the totalvotes list
         totalvotes.append(row[0])
                     
-        #add all unique candidate values to candidate list
+        #append all unique candidate values to candidate list
         if str(row[2]) not in candidates:
             candidates.append(row[2])
 
@@ -37,12 +40,12 @@ with open(budget_data_csv) as file:
         elif str(row[2]) == str(candidates[2]):
             candidate_count[2] +=1
 
-#find winner: identify the max value from the candidate cound list 
+#find winner: identify the max value from the candidate_count list - store the index
 winnerindex = candidate_count.index(max(candidate_count))
 #pull winner from candidates list using winnerindex above
 winner = candidates[winnerindex]
 
-#print header and results
+#print text and results
 print("Election Results \n" + "-------------------------")
 print(f'Total Votes: {len(totalvotes)}')
 print("-------------------------")
