@@ -24,7 +24,7 @@ with open(budget_data_csv) as file:
     for row in reader:
         #append the values of all votes to the totalvotes list
         totalvotes.append(row[0])
-                    
+         
         #append all unique candidate values to candidate list
         if str(row[2]) not in candidates:
             candidates.append(row[2])
