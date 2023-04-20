@@ -63,7 +63,6 @@ print(f'Total: ${total}')
 print(f'Average Change: ${change_avg}')
 print(f'Greatest Increase in Profits: {datemax} $({max(change_value)})')
 print(f'Greatest Decrease in Profits: {datemin} $({min(change_value)})')
-print("next")
 
 
 
